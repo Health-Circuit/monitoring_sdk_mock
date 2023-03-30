@@ -42,16 +42,15 @@ class MonitoringMock {
       'BeatOne',
     ];
     final names = [
-      'Device 1',
-      'Device 2',
-      'Device 3',
-      'Device 4',
-      'Device 5',
-      'Device 6',
-      'Device 7',
-      'Device 8',
-      'Device 9',
-      'Device 10'
+      'BeatOne 1',
+      'BeatOne 2',
+      'BeatOne 3',
+      'GoogleFit 1',
+      'GoogleFit 2',
+      'GoogleFit 5',
+      'AppleHealthKit 7',
+      'AppleHealthKit 3',
+      'AppleHealthKit 6',
     ];
     final variables = [
       'hr',
@@ -64,7 +63,7 @@ class MonitoringMock {
       'oxygen saturation',
     ];
     final jsonList = <Map<String, dynamic>>[];
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 5; i++) {
       final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
       final uuid = random.nextInt(100000).toString();
       final name = names[random.nextInt(names.length)];
