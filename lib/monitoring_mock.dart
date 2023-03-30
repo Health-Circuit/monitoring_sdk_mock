@@ -9,6 +9,35 @@ import 'monitoring_mock_platform_interface.dart';
 class MonitoringMock {
   List<Map<String, dynamic>> pairedDevices = [];
   List<Map<String, dynamic>> discoveredDevices = [];
+  final random = Random();
+  final deviceTypes = [
+    'smartwatch',
+    'AppleHealthKit',
+    'GoogleFit',
+    'BeatOne',
+  ];
+  final names = [
+    'BeatOne 1',
+    'BeatOne 2',
+    'BeatOne 3',
+    'GoogleFit 1',
+    'GoogleFit 2',
+    'GoogleFit 5',
+    'AppleHealthKit 7',
+    'AppleHealthKit 3',
+    'AppleHealthKit 6',
+  ];
+  final variables = [
+    'hr',
+    'steps',
+    'calories',
+    'distance',
+    'sleep time',
+    'sleep quality',
+    'blood pressure',
+    'oxygen saturation',
+  ];
+
   Future<void> initPlugin() async {
     await Hive.initFlutter();
     await Hive.openBox("pairedDevicesBox");
@@ -54,34 +83,6 @@ class MonitoringMock {
     if (pairedDevices.isNotEmpty) {
       return pairedDevices;
     }
-    final random = Random();
-    final deviceTypes = [
-      'smartwatch',
-      'AppleHealthKit',
-      'GoogleFit',
-      'BeatOne',
-    ];
-    final names = [
-      'BeatOne 1',
-      'BeatOne 2',
-      'BeatOne 3',
-      'GoogleFit 1',
-      'GoogleFit 2',
-      'GoogleFit 5',
-      'AppleHealthKit 7',
-      'AppleHealthKit 3',
-      'AppleHealthKit 6',
-    ];
-    final variables = [
-      'hr',
-      'steps',
-      'calories',
-      'distance',
-      'sleep time',
-      'sleep quality',
-      'blood pressure',
-      'oxygen saturation',
-    ];
     final jsonList = <Map<String, dynamic>>[];
     for (var i = 0; i < 2; i++) {
       final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
@@ -111,24 +112,6 @@ class MonitoringMock {
   }
 
   Future<List<Map<String, dynamic>>> discover(String deviceType) async {
-    final random = Random();
-    final deviceTypes = [
-      'smartwatch',
-      'AppleHealthKit',
-      'GoogleFit',
-      'BeatOne',
-    ];
-    final names = [
-      'BeatOne 1',
-      'BeatOne 2',
-      'BeatOne 3',
-      'GoogleFit 1',
-      'GoogleFit 2',
-      'GoogleFit 5',
-      'AppleHealthKit 7',
-      'AppleHealthKit 3',
-      'AppleHealthKit 6',
-    ];
     final jsonList = <Map<String, dynamic>>[];
     for (var i = 0; i < 4; i++) {
       final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
