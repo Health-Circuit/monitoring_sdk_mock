@@ -7,6 +7,8 @@ import 'package:uuid/uuid.dart';
 import 'monitoring_mock_platform_interface.dart';
 
 class MonitoringMock {
+  static List<Map<String, dynamic>> pairedDevices = [];
+  static List<Map<String, dynamic>> discoveredDevices = [];
   Future<void> initPlugin() async {
     await Hive.initFlutter();
     await Hive.openBox("pairedDevicesBox");
@@ -34,6 +36,9 @@ class MonitoringMock {
   }
 
   Future<List<Map<String, dynamic>>> getPairedDevices() async {
+    if (pairedDevices.isNotEmpty) {
+      return pairedDevices;
+    }
     final random = Random();
     final deviceTypes = [
       'smartwatch',
@@ -86,6 +91,42 @@ class MonitoringMock {
       });
     }
     await Future.delayed(const Duration(seconds: 1));
+    pairedDevices = jsonList;
+    return jsonList;
+  }
+
+  Future<List<Map<String, dynamic>>> discover() async {
+    final random = Random();
+    final deviceTypes = [
+      'smartwatch',
+      'AppleHealthKit',
+      'GoogleFit',
+      'BeatOne',
+    ];
+    final names = [
+      'BeatOne 1',
+      'BeatOne 2',
+      'BeatOne 3',
+      'GoogleFit 1',
+      'GoogleFit 2',
+      'GoogleFit 5',
+      'AppleHealthKit 7',
+      'AppleHealthKit 3',
+      'AppleHealthKit 6',
+    ];
+    final jsonList = <Map<String, dynamic>>[];
+    for (var i = 0; i < 3; i++) {
+      final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
+      final uuid = random.nextInt(100000).toString();
+      final name = names[random.nextInt(names.length)];
+      jsonList.add({
+        'deviceType': deviceType,
+        'uuid': uuid,
+        'name': name,
+      });
+    }
+    await Future.delayed(const Duration(seconds: 1));
+    discoveredDevices = jsonList;
     return jsonList;
   }
 }
