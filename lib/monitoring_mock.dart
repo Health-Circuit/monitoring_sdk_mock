@@ -35,6 +35,20 @@ class MonitoringMock {
     return MonitoringMockPlatform.instance.getDeviceBattery(deviceId);
   }
 
+  Future<void> pair(
+      String deviceType, List<String> variables, String deviceId) async {
+    var result =
+        discoveredDevices.firstWhere((element) => element['uuid'] == deviceId);
+    final lastSynchronization = DateTime.now().millisecondsSinceEpoch;
+    pairedDevices.add({
+      "device": result,
+      "variables": variables
+          .map((variable) =>
+              {"name": variable, "lastSynchronization": lastSynchronization})
+          .toList(),
+    });
+  }
+
   Future<List<Map<String, dynamic>>> getPairedDevices() async {
     if (pairedDevices.isNotEmpty) {
       return pairedDevices;
@@ -95,7 +109,7 @@ class MonitoringMock {
     return jsonList;
   }
 
-  Future<List<Map<String, dynamic>>> discover() async {
+  Future<List<Map<String, dynamic>>> discover(String deviceType) async {
     final random = Random();
     final deviceTypes = [
       'smartwatch',
