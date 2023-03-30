@@ -1,19 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monitoring_mock/monitoring_mock.dart';
-import 'package:monitoring_mock/monitoring_mock_platform_interface.dart';
 import 'package:monitoring_mock/monitoring_mock_method_channel.dart';
+import 'package:monitoring_mock/monitoring_mock_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 class MockMonitoringMockPlatform
     with MockPlatformInterfaceMixin
     implements MonitoringMockPlatform {
-
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<int> getDeviceBattery(String deviceId) {
+    // TODO: implement getDeviceBattery
+    throw UnimplementedError();
+  }
 }
 
 void main() {
-  final MonitoringMockPlatform initialPlatform = MonitoringMockPlatform.instance;
+  final MonitoringMockPlatform initialPlatform =
+      MonitoringMockPlatform.instance;
 
   test('$MethodChannelMonitoringMock is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelMonitoringMock>());
