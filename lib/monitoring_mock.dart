@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive_flutter/adapters.dart';
 import 'package:monitoring_mock/paired_devices.dart';
 import 'package:uuid/uuid.dart';
@@ -16,7 +18,7 @@ class MonitoringMock {
     return MonitoringMockPlatform.instance.getPlatformVersion();
   }
 
-  Future<List<PairedDevice>> getPairedDevices() async {
+  Future<List<PairedDevice>> getPairedDevices2() async {
     var box = Hive.box("pairedDevicesBox");
     final items = box.values;
     final List<PairedDevice> pairedDevices = items.toList().map((dynamic item) {
@@ -29,5 +31,61 @@ class MonitoringMock {
 
   Future<int> getDeviceBattery(String deviceId) {
     return MonitoringMockPlatform.instance.getDeviceBattery(deviceId);
+  }
+
+  List<Map<String, dynamic>> getPairedDevices() {
+    final random = Random();
+    final deviceTypes = [
+      'smartwatch',
+      'AppleHealthKit',
+      'GoogleFit',
+      'BeatOne',
+    ];
+    final names = [
+      'Device 1',
+      'Device 2',
+      'Device 3',
+      'Device 4',
+      'Device 5',
+      'Device 6',
+      'Device 7',
+      'Device 8',
+      'Device 9',
+      'Device 10'
+    ];
+    final variables = [
+      'hr',
+      'steps',
+      'calories',
+      'distance',
+      'sleep time',
+      'sleep quality',
+      'blood pressure',
+      'oxygen saturation',
+    ];
+    final jsonList = <Map<String, dynamic>>[];
+    for (var i = 0; i < 3; i++) {
+      final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
+      final uuid = random.nextInt(100000).toString();
+      final name = names[random.nextInt(names.length)];
+      final variableList = <Map<String, dynamic>>[];
+      for (var j = 0; j < 3; j++) {
+        final variableName = variables[random.nextInt(variables.length)];
+        final lastSynchronization = DateTime.now().millisecondsSinceEpoch;
+        variableList.add({
+          'name': variableName,
+          'lastSynchronization': lastSynchronization,
+        });
+      }
+      jsonList.add({
+        'device': {
+          'deviceType': deviceType,
+          'uuid': uuid,
+          'name': name,
+        },
+        'variables': variableList,
+      });
+    }
+    return jsonList;
   }
 }
