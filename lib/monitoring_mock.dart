@@ -33,7 +33,7 @@ class MonitoringMock {
     return MonitoringMockPlatform.instance.getDeviceBattery(deviceId);
   }
 
-  List<Map<String, dynamic>> getPairedDevices() {
+  Future<List<Map<String, dynamic>>> getPairedDevices() async {
     final random = Random();
     final deviceTypes = [
       'smartwatch',
@@ -86,6 +86,7 @@ class MonitoringMock {
         'variables': variableList,
       });
     }
+    await Future.delayed(const Duration(seconds: 1));
     return jsonList;
   }
 }
