@@ -7,8 +7,8 @@ import 'package:uuid/uuid.dart';
 import 'monitoring_mock_platform_interface.dart';
 
 class MonitoringMock {
-  static List<Map<String, dynamic>> pairedDevices = [];
-  static List<Map<String, dynamic>> discoveredDevices = [];
+  List<Map<String, dynamic>> pairedDevices = [];
+  List<Map<String, dynamic>> discoveredDevices = [];
   Future<void> initPlugin() async {
     await Hive.initFlutter();
     await Hive.openBox("pairedDevicesBox");
@@ -82,7 +82,7 @@ class MonitoringMock {
       'oxygen saturation',
     ];
     final jsonList = <Map<String, dynamic>>[];
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 2; i++) {
       final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
       final uuid = random.nextInt(100000).toString();
       final name = names[random.nextInt(names.length)];
@@ -129,7 +129,7 @@ class MonitoringMock {
       'AppleHealthKit 6',
     ];
     final jsonList = <Map<String, dynamic>>[];
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 4; i++) {
       final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
       final uuid = random.nextInt(100000).toString();
       final name = names[random.nextInt(names.length)];
