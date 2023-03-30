@@ -47,6 +47,7 @@ class MonitoringMock {
               {"name": variable, "lastSynchronization": lastSynchronization})
           .toList(),
     });
+    discoveredDevices.remove(result);
   }
 
   Future<List<Map<String, dynamic>>> getPairedDevices() async {
