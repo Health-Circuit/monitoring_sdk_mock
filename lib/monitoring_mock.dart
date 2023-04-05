@@ -11,10 +11,7 @@ class MonitoringMock {
   List<Map<String, dynamic>> discoveredDevices = [];
   final random = Random();
   final deviceTypes = [
-    'smartwatch',
-    'AppleHealthKit',
-    'GoogleFit',
-    'BeatOne',
+    'BEAT_ONE',
   ];
   final names = [
     'BeatOne 1',
