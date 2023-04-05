@@ -18,22 +18,11 @@ class MonitoringMock {
     'BeatOne 1',
     'BeatOne 2',
     'BeatOne 3',
-    'GoogleFit 1',
-    'GoogleFit 2',
-    'GoogleFit 5',
-    'AppleHealthKit 7',
-    'AppleHealthKit 3',
-    'AppleHealthKit 6',
   ];
   final variables = [
     'hr',
     'steps',
-    'calories',
-    'distance',
-    'sleep time',
-    'sleep quality',
-    'blood pressure',
-    'oxygen saturation',
+    'sleep',
   ];
 
   Future<void> initPlugin() async {
@@ -87,8 +76,8 @@ class MonitoringMock {
       final uuid = random.nextInt(100000).toString();
       final name = names[random.nextInt(names.length)];
       final variableList = <Map<String, dynamic>>[];
-      for (var j = 0; j < 3; j++) {
-        final variableName = variables[random.nextInt(variables.length)];
+      for (var j = 0; j < variables.length; j++) {
+        final variableName = variables[j];
         final lastSynchronization = DateTime.now().millisecondsSinceEpoch;
         variableList.add({
           'name': variableName,
