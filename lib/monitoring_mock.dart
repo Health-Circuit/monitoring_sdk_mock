@@ -9,6 +9,7 @@ import 'monitoring_mock_platform_interface.dart';
 class MonitoringMock {
   List<Map<String, dynamic>> pairedDevices = [];
   List<Map<String, dynamic>> discoveredDevices = [];
+  List<Map<String, dynamic>> pairedData = [];
   final random = Random();
   final deviceTypes = [
     'BEAT_ONE',
@@ -81,7 +82,7 @@ class MonitoringMock {
       return pairedDevices;
     }
     final jsonList = <Map<String, dynamic>>[];
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 1; i++) {
       final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
       final uuid = random.nextInt(100000).toString();
       final name = names[random.nextInt(names.length)];
@@ -123,5 +124,37 @@ class MonitoringMock {
     await Future.delayed(const Duration(seconds: 1));
     discoveredDevices = jsonList;
     return jsonList;
+  }
+
+  Future<void> synchronize() async {
+    final data = <Map<String, dynamic>>[];
+    for (Map<String, dynamic> device in pairedDevices) {
+      for (Map<String, dynamic> variable in device['variables']) {
+        data.add({
+          "device": {
+            "deviceType": device['device']['deviceType'],
+            "uuid": device['device']['uuid'],
+            "name": device['device']['name'],
+          },
+          "timestamp": variable['lastSynchronization'],
+          "type": variable['name'],
+          "value": random.nextInt(10000),
+          "value2": ""
+        });
+      }
+    }
+    await Future.delayed(const Duration(seconds: 1));
+    pairedData = data;
+  }
+
+  Future<List<Map<String, dynamic>>> query(
+      String variable, int? from, int? to) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return pairedData
+        .where((element) => element['device']['deviceType'] == variable
+            //&&(from == null || element['timestamp'] >= from) &&
+            //(to == null || element['timestamp'] <= to)
+            )
+        .toList();
   }
 }
