@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:hive_flutter/adapters.dart';
+import 'package:logger/logger.dart';
 import 'package:monitoring_mock/paired_devices.dart';
 import 'package:uuid/uuid.dart';
 
@@ -132,13 +133,13 @@ class MonitoringMock {
         });
       }
     }
-    await Future.delayed(const Duration(seconds: 1));
     pairedData = data;
+    Logger().d(pairedData);
   }
 
   Future<List<Map<String, dynamic>>> query(
       String variable, int? from, int? to) async {
-    await Future.delayed(const Duration(seconds: 1));
+    Logger().d(pairedData);
     return pairedData
         .where((element) => element['type'] == variable
             //&&(from == null || element['timestamp'] >= from) &&
