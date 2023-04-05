@@ -140,7 +140,7 @@ class MonitoringMock {
       String variable, int? from, int? to) async {
     await Future.delayed(const Duration(seconds: 1));
     return pairedData
-        .where((element) => element['device']['deviceType'] == variable
+        .where((element) => element['type'] == variable
             //&&(from == null || element['timestamp'] >= from) &&
             //(to == null || element['timestamp'] <= to)
             )
