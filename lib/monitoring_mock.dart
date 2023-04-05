@@ -128,7 +128,7 @@ class MonitoringMock {
           },
           "timestamp": variable['lastSynchronization'],
           "type": variable['name'],
-          "value": random.nextInt(10000),
+          "value": random.nextInt(10000).toString(),
           "value2": ""
         });
       }
