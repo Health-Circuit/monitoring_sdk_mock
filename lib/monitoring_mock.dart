@@ -23,7 +23,7 @@ class MonitoringMock {
   final variables = [
     'hr',
     'steps',
-    'sleep',
+    //'sleep',
   ];
 
   Future<void> initPlugin() async {
