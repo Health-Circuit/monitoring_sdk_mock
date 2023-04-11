@@ -95,7 +95,6 @@ class MonitoringMock {
         'variables': variableList,
       });
     }
-    await Future.delayed(const Duration(seconds: 1));
     pairedDevices = jsonList;
     return jsonList;
   }
@@ -112,7 +111,6 @@ class MonitoringMock {
         'name': name,
       });
     }
-    await Future.delayed(const Duration(seconds: 1));
     discoveredDevices = jsonList;
     return jsonList;
   }
