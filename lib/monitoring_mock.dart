@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:hive_flutter/adapters.dart';
-import 'package:logger/logger.dart';
 import 'package:monitoring_mock/paired_devices.dart';
 import 'package:uuid/uuid.dart';
 
@@ -56,7 +55,8 @@ class MonitoringMock {
       String deviceType, List<String> variables, String deviceId) async {
     var result =
         discoveredDevices.firstWhere((element) => element['uuid'] == deviceId);
-    final lastSynchronization = DateTime.now().millisecondsSinceEpoch;
+    final lastSynchronization =
+        DateTime.now().add(const Duration(hours: 2)).millisecondsSinceEpoch;
     pairedDevices.add({
       "device": result,
       "variables": variables
@@ -79,7 +79,8 @@ class MonitoringMock {
       final variableList = <Map<String, dynamic>>[];
       for (var j = 0; j < variables.length; j++) {
         final variableName = variables[j];
-        final lastSynchronization = DateTime.now().millisecondsSinceEpoch;
+        final lastSynchronization =
+            DateTime.now().add(const Duration(hours: 2)).millisecondsSinceEpoch;
         variableList.add({
           'name': variableName,
           'lastSynchronization': lastSynchronization,
@@ -134,12 +135,12 @@ class MonitoringMock {
       }
     }
     pairedData = data;
-    Logger().d(pairedData);
+    //()Logger().d(pairedData);
   }
 
   Future<List<Map<String, dynamic>>> query(
       String variable, int? from, int? to) async {
-    Logger().d(pairedData);
+    //Logger().d(pairedData);
     return pairedData
         .where((element) => element['type'] == variable
             //&&(from == null || element['timestamp'] >= from) &&
