@@ -1,16 +1,19 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:hive_flutter/adapters.dart';
 import 'package:monitoring_mock/paired_devices.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'monitoring_mock_platform_interface.dart';
 
 class MonitoringMock {
-  List<Map<String, dynamic>> pairedDevices = [];
+  //List<Map<String, dynamic>> pairedDevices = [];
   List<Map<String, dynamic>> discoveredDevices = [];
   List<Map<String, dynamic>> pairedData = [];
   final random = Random();
+
   final deviceTypes = [
     'BEAT_ONE',
   ];
@@ -53,10 +56,12 @@ class MonitoringMock {
 
   Future<void> pair(
       String deviceType, List<String> variables, String deviceId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var result =
         discoveredDevices.firstWhere((element) => element['uuid'] == deviceId);
     final lastSynchronization =
         DateTime.now().add(const Duration(hours: 2)).millisecondsSinceEpoch;
+    List<Map<String, dynamic>> pairedDevices = await getPairedDevices();
     pairedDevices.add({
       "device": result,
       "variables": variables
@@ -65,38 +70,19 @@ class MonitoringMock {
           .toList(),
     });
     discoveredDevices.remove(result);
+    List<String> items = pairedDevices.map((e) => jsonEncode(e)).toList();
+    await prefs.setStringList('items', items);
   }
 
   Future<List<Map<String, dynamic>>> getPairedDevices() async {
-    if (pairedDevices.isNotEmpty) {
-      return pairedDevices;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? items = prefs.getStringList('items');
+    if (items == null) return [];
+    List<Map<String, dynamic>> pairedDevices = [];
+    for (String item in items) {
+      pairedDevices.add(jsonDecode(item));
     }
-    final jsonList = <Map<String, dynamic>>[];
-    for (var i = 0; i < 1; i++) {
-      final deviceType = deviceTypes[random.nextInt(deviceTypes.length)];
-      final uuid = random.nextInt(100000).toString();
-      final name = names[random.nextInt(names.length)];
-      final variableList = <Map<String, dynamic>>[];
-      for (var j = 0; j < variables.length; j++) {
-        final variableName = variables[j];
-        final lastSynchronization =
-            DateTime.now().add(const Duration(hours: 2)).millisecondsSinceEpoch;
-        variableList.add({
-          'name': variableName,
-          'lastSynchronization': lastSynchronization,
-        });
-      }
-      jsonList.add({
-        'device': {
-          'deviceType': deviceType,
-          'uuid': uuid,
-          'name': name,
-        },
-        'variables': variableList,
-      });
-    }
-    pairedDevices = jsonList;
-    return jsonList;
+    return pairedDevices;
   }
 
   Future<List<Map<String, dynamic>>> discover(String deviceType) async {
@@ -117,6 +103,7 @@ class MonitoringMock {
 
   Future<void> synchronize() async {
     final data = <Map<String, dynamic>>[];
+    List<Map<String, dynamic>> pairedDevices = await getPairedDevices();
     for (Map<String, dynamic> device in pairedDevices) {
       for (Map<String, dynamic> variable in device['variables']) {
         data.add({
