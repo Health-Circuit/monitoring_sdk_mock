@@ -134,8 +134,7 @@ class MonitoringMock {
         .toList();
   }
 
-  Future<List<Map<String, dynamic>>> getSupportedDevices(
-      String variable, int? from, int? to) async {
+  Future<List<Map<String, dynamic>>> getSupportedDevices() async {
     List<Map<String, dynamic>> supportedDevices = [
       {
         "name": "beatone",
