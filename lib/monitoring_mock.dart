@@ -133,4 +133,23 @@ class MonitoringMock {
             )
         .toList();
   }
+
+  Future<List<Map<String, dynamic>>> getSupportedDevices(
+      String variable, int? from, int? to) async {
+    List<Map<String, dynamic>> supportedDevices = [
+      {
+        "name": "beatone",
+        "discoverable": true,
+        "variables": ["hr", "steps", "distance", "calories"]
+      },
+      {
+        "name": "googlefit",
+        "discoverable": false,
+        "variables": ["hr", "steps", "distance", "calories", "hrv", "sleep"]
+      }
+    ];
+    return supportedDevices;
+  }
+
+  Future<void> stopDiscover() async {}
 }
