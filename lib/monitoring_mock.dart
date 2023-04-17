@@ -59,8 +59,7 @@ class MonitoringMock {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var result =
         discoveredDevices.firstWhere((element) => element['uuid'] == deviceId);
-    final lastSynchronization =
-        DateTime.now().add(const Duration(hours: 2)).millisecondsSinceEpoch;
+    final lastSynchronization = DateTime.now().millisecondsSinceEpoch;
     List<Map<String, dynamic>> pairedDevices = await getPairedDevices();
     pairedDevices.add({
       "device": result,
@@ -112,7 +111,7 @@ class MonitoringMock {
             "uuid": device['device']['uuid'],
             "name": device['device']['name'],
           },
-          "timestamp": variable['lastSynchronization'],
+          "timestamp": DateTime.now().millisecondsSinceEpoch,
           "type": variable['name'],
           "value": random.nextInt(10000).toString(),
           "value2": ""
